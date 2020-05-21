@@ -2,7 +2,7 @@
 """
 Created on Wed Apr  8 17:16:41 2020
 
-@author: Pseudomonas
+@author: Simon Leemans
 """
 import numpy as np
 import os
