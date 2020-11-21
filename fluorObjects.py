@@ -174,9 +174,8 @@ class FluorObject:
             plt.title(os.path.basename(self.SpecfileName[fileIndex]))
             plt.show()
 
-    def add_refFile(self):
+    def add_refFile(self,RefFile):
          # reads in r64, separates into DC (intensity image) and Phasor Components 
-        RefFile=tkinter.filedialog.askopenfilename(title='Select a .r64 file',filetypes=[("R64 files", "*.r64")])
         if os.path.splitext(RefFile)[1].lower() =='.r64': 
             self.lifetimefileName.append(RefFile)
             with lfdfiles.SimfcsR64(RefFile) as f:
@@ -187,18 +186,20 @@ class FluorObject:
                 g2=f.asarray()[4,:,:]*np.cos(np.radians(f.asarray()[3,:,:]))
                 self.lifetimePhasor.append([s1,g1,s2,g2])
             
-    def add_refFileauto(self,RefFile):
-     # reads in r64, separates into DC (intensity image) and Phasor Components 
-    # RefFile=tkinter.filedialog.askopenfilename(title='Select a .r64 file',filetypes=[("R64 files", "*.r64")])
-        if os.path.splitext(RefFile)[1].lower() =='.r64': 
-            self.lifetimefileName.append(RefFile)
-            with lfdfiles.SimfcsR64(RefFile) as f:
-                self.lifetimeIm.append(f.asarray()[0,:,:])
-                s1=f.asarray()[2,:,:]*np.sin(np.radians(f.asarray()[1,:,:]))
-                g1=f.asarray()[2,:,:]*np.cos(np.radians(f.asarray()[1,:,:]))
-                s2=f.asarray()[4,:,:]*np.sin(np.radians(f.asarray()[3,:,:]))
-                g2=f.asarray()[4,:,:]*np.cos(np.radians(f.asarray()[3,:,:]))
-                self.lifetimePhasor.append([s1,g1,s2,g2])            
+# =============================================================================
+#     #def add_refFileauto(self,RefFile):
+#      # reads in r64, separates into DC (intensity image) and Phasor Components 
+#     # RefFile=tkinter.filedialog.askopenfilename(title='Select a .r64 file',filetypes=[("R64 files", "*.r64")])
+#         if os.path.splitext(RefFile)[1].lower() =='.r64': 
+#             self.lifetimefileName.append(RefFile)
+#             with lfdfiles.SimfcsR64(RefFile) as f:
+#                 self.lifetimeIm.append(f.asarray()[0,:,:])
+#                 s1=f.asarray()[2,:,:]*np.sin(np.radians(f.asarray()[1,:,:]))
+#                 g1=f.asarray()[2,:,:]*np.cos(np.radians(f.asarray()[1,:,:]))
+#                 s2=f.asarray()[4,:,:]*np.sin(np.radians(f.asarray()[3,:,:]))
+#                 g2=f.asarray()[4,:,:]*np.cos(np.radians(f.asarray()[3,:,:]))
+#                 self.lifetimePhasor.append([s1,g1,s2,g2])            
+# =============================================================================
     def showLifeImage(self,fileIndex):
         i=self.lifetimeIm[fileIndex]
         plt.imshow(i)
@@ -366,10 +367,10 @@ def findFractions(signal,species):
     cons = ({'type': 'eq', 'fun': lambda x:  1-np.sum(x)})#, 'jac': lambda x:np.array(1.0 for x in range(sz))})
     # res = minimize(funcFs,init , method='SLSQP',bounds=bnds,constraints = cons,tol=1e-10)
     # res = minimize(funcFs,init , method='Nelder-Mead')#,bounds=bnds)#,constraints = cons,tol=1e-10)
-    res1=0#optimize.differential_evolution(funcFs,bounds=bnds,constraints=linearconstraint)
+    # res1=0#optimize.differential_evolution(funcFs,bounds=bnds,constraints=linearconstraint)
     res=optimize.shgo(funcFs,bounds=bnds,constraints=cons,iters=1)
     res=res.x  
-    return res1,res
+    return res
 
 def findFractionsinit(signal,species,init): 
     #signal is in the form [(s,g),harmonics] ie shape = (2,har,256,256)
