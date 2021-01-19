@@ -11,7 +11,6 @@ import numpy as np
 import matplotlib.pyplot as plt   
 import matplotlib
 import pandas as pd 
-import seaborn as sns
 import numpy.fft as ft
 from numpy import pi
 import scipy.signal as sc
@@ -369,8 +368,9 @@ def findFractions(signal,species):
     # res = minimize(funcFs,init , method='Nelder-Mead')#,bounds=bnds)#,constraints = cons,tol=1e-10)
     # res1=0#optimize.differential_evolution(funcFs,bounds=bnds,constraints=linearconstraint)
     res=optimize.shgo(funcFs,bounds=bnds,constraints=cons,iters=1)
-    res=res.x  
-    return res
+    res1=res.x[0]
+    res2=res.x[1]
+    return res1,res2
 
 def findFractionsinit(signal,species,init): 
     #signal is in the form [(s,g),harmonics] ie shape = (2,har,256,256)
@@ -438,7 +438,7 @@ def imDecomposition(NADH,PYO,PVD,boundNadhsignal,NADH_bound,myob):
     # tau=np.zeros(1)
     # tau[0]=0.37e-9
     # NADHPerf=phasorit(tau, 2*pi*80e6,1)
-    LifeSpecies=LifetimeAsPureComponentSG([NADH,PYO,PVD],1)
+    LifeSpecies=LifetimeAsPureComponentSG([NADH,PYO,PVD],2)
     LifeSpecies=np.concatenate((LifeSpecies,NADH_bound),axis=2)
     # LifeSpecies=np.concatenate((LifeSpecies,NADHPerf),axis=2)
     
@@ -652,14 +652,14 @@ def imDecomposition_life(NADH,PYO,PVD,NADH_bound,myob):
     # tau=np.zeros(1)
     # tau[0]=0.37e-9
     # NADHPerf=phasorit(tau, 2*pi*80e6,1)
-    LifeSpecies=LifetimeAsPureComponentSG([NADH,PYO,PVD],1)
+    LifeSpecies=LifetimeAsPureComponentSG([NADH,PYO,PVD],2)
     LifeSpecies=np.concatenate((LifeSpecies,NADH_bound),axis=2)
     # LifeSpecies=np.concatenate((LifeSpecies,NADHPerf),axis=2)
     
         # LifeSpecies=LifetimeAsPureComponentSG([NADH,PYO,PVD],1) #perfectnadh
     # LifeSpecies=np.concatenate((LifeSpecies,NADH_bound),axis=2)#perfectnadh
     
-    LifeSignal=np.zeros((2,1,256,256))
+    LifeSignal=np.zeros((2,2,256,256))
     LifeSignal[0,0,:,:]=myob.lifetimePhasor[0][0]
     LifeSignal[1,0,:,:]=myob.lifetimePhasor[0][1]
     # LifeSignal[0,1,:,:]=myob.lifetimePhasor[0][2]
@@ -681,7 +681,7 @@ def imDecomposition_life(NADH,PYO,PVD,NADH_bound,myob):
                 if i>2 and i<253:
                     if j>2 and j<253:
                         if myob.lifetimethreshold<myob.lifetimeIm[0][i,j]:
-                            LifeTimeResde[:,i,j],LifeTimeRes[:,i,j]= findFractions(LifeSignal[:,:,i,j].reshape(2,1,1), LifeSpecies)
+                            LifeTimeResde[:,i,j],LifeTimeRes[:,i,j]= findFractions(LifeSignal[:,:,i,j].reshape(2,2,1), LifeSpecies)
                         else: LifeTimeResde[:,i,j],LifeTimeRes[:,i,j]=np.nan,np.nan
                     else: LifeTimeResde[:,i,j],LifeTimeRes[:,i,j]=np.nan,np.nan
                 else: LifeTimeResde[:,i,j],LifeTimeRes[:,i,j]=np.nan,np.nan

@@ -47,8 +47,8 @@ LifeSpecies=fluorObjects.LifetimeAsPureComponentSG([NADH,PYO,PVD],1)
 LifeSpecies=np.concatenate((LifeSpecies,NADH_bound),axis=2)
 
 
-myob=fluorObjects.FluorObject('sample')
-myob.add_refFile("/Users/taragallagher/Desktop/Spectral_lifetime_deconvolution/Spectral_LifetimeCh1_passive_2_8ns/bacterial_samples/M9succinate/PA14_lowpyo_highpvd_1/PA14succinateD5_img1_5p_fov25_740nm_63xO_CH1_442_46_CH2_540_40$CC0S000$CC0S_ch1_h1_h2.R64")
+sample=FluorObject('sample')
+sample.add_refFile("/Users/taragallagher/Desktop/Spectral_lifetime_deconvolution/Spectral_LifetimeCh1_passive_2_8ns/bacterial_samples/M9succinate/PA14_lowpyo_highpvd_1/PA14succinateD5_img1_5p_fov25_740nm_63xO_CH1_442_46_CH2_540_40$CC0S000$CC0S_ch1_h1_h2.R64")
 
 
 LifeSignal=np.zeros((2,1,256,256))

@@ -13,8 +13,10 @@ These are saved as .fbd files, then converted locally to .R64 files- containing 
 * python 3 
 * tifffile
 `pip install tifffile`
-
- 
-
+* matplotlib
+`pip install matplotlib`
+* scipy
+`pip install scipy`
+* numba
 
 
